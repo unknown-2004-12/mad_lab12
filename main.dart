@@ -16,17 +16,17 @@ class _quizAppState extends State<quizApp> {
     {
       'q': 'What is the capital of France?',
       'o': ['Paris', 'London', 'Berlin', 'Madrid'],
-      'a': '0',
+      'a': 0,
     },
     {
       'q': 'What is 2 + 2?',
       'o': ['3', '4', '5', '6'],
-      'a': '1',
+      'a': 1,
     },
     {
       'q': 'What is the largest planet in our solar system?',
       'o': ['Earth', 'Mars', 'Jupiter', 'Saturn'],
-      'a': '2',
+      'a': 2,
     },
   ];
   int i = 0;
@@ -48,7 +48,6 @@ class _quizAppState extends State<quizApp> {
 
   @override
   Widget build(BuildContext context) {
-    var q = _questions[i];
     if (i >= _questions.length){
       return Scaffold(
         appBar: AppBar(
@@ -57,7 +56,7 @@ class _quizAppState extends State<quizApp> {
         body: Center(
           child: Column(
             children: [
-              Text('Score: $score / $_questions.length'),
+              Text('Score: $score / ${_questions.length}'),
               ElevatedButton(
                 onPressed: () => reset(),
                 child: Text('Restart Quiz'),
@@ -67,6 +66,7 @@ class _quizAppState extends State<quizApp> {
         ),
       );
     }
+    var q = _questions[i];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quiz App'),
