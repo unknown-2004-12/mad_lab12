@@ -1,87 +1,87 @@
 import 'package:flutter/material.dart';
-
-void main() =>
-    runApp(MaterialApp(home: QuizApp(), debugShowCheckedModeBanner: false));
-
-// ------------------------ Main Quiz Widget ------------------------
-class QuizApp extends StatefulWidget {
-  const QuizApp({super.key});
-  @override
-  State<QuizApp> createState() => _QuizAppState();
+import 'package:fl_chart/fl_chart.dart';
+void main(){
+  runApp(MaterialApp(
+    home: quizApp(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
-// ------------------------ State Class ------------------------
-class _QuizAppState extends State<QuizApp> {
-  // List of questions with options and correct answer index
-  final List<Map<String, dynamic>> questions = [
+class quizApp extends StatefulWidget {
+  const quizApp({super.key});
+  @override
+  State<quizApp> createState() => _quizAppState();
+}
+class _quizAppState extends State<quizApp> {
+  final List<Map<String, dynamic>> _questions = [
     {
-      'q': 'Capital of India?',
-      'o': ['Mumbai', 'Delhi', 'Kolkata', 'Chennai'],
-      'a': 1
+      'q': 'What is the capital of France?',
+      'o': ['Paris', 'London', 'Berlin', 'Madrid'],
+      'a': '0',
     },
     {
-      'q': '5 + 3 = ?',
-      'o': ['6', '8', '9', '7'],
-      'a': 1
+      'q': 'What is 2 + 2?',
+      'o': ['3', '4', '5', '6'],
+      'a': '1',
     },
     {
-      'q': 'Color of sky?',
-      'o': ['Red', 'Blue', 'Green', 'Yellow'],
-      'a': 1
+      'q': 'What is the largest planet in our solar system?',
+      'o': ['Earth', 'Mars', 'Jupiter', 'Saturn'],
+      'a': '2',
     },
   ];
-  int i = 0;      // Current question index
-  int score = 0;  // Score tracker
-  // Called when user selects an answer
-  void answer(int selected) {
-    if (selected == questions[i]['a']) score++;
-    setState(() => i++);
-  }
-  // Reset quiz
-  void reset() {
+  int i = 0;
+  int score = 0;
+  void answer(int selected){
+    if( selected == _questions[i]['a']){
+      score++;
+    }
     setState(() {
-        i = 0;
-        score = 0;
-      });
+      i++;
+    });
   }
+  void reset(){
+    setState(() {
+      i = 0;
+      score = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // ------------------ Result Screen ------------------
-    if (i >= questions.length) {
+    var q = _questions[i];
+    if (i >= _questions.length){
       return Scaffold(
-        appBar: AppBar(title: Text('Result')),
+        appBar: AppBar(
+          title: const Text('Result'),
+        ),
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Score: $score / ${questions.length}',
-                  style: TextStyle(fontSize: 24)),
-              SizedBox(height: 20),
-              ElevatedButton(onPressed: () => reset(), child: Text('Play Again'))
+              Text('Score: $score / $_questions.length'),
+              ElevatedButton(
+                onPressed: () => reset(),
+                child: Text('Restart Quiz'),
+              ),
             ],
           ),
         ),
       );
     }
-
-    // ------------------ Quiz Screen ------------------
-    var q = questions[i];
     return Scaffold(
-      appBar: AppBar(title: Text('Quiz App')),
-      body: Padding(
-        padding: EdgeInsets.all(20),
+      appBar: AppBar(
+        title: const Text('Quiz App'),
+      ),
+      body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Q${i + 1}: ${q['q']}', style: TextStyle(fontSize: 20)),
-            SizedBox(height: 20),
+            Text('Q${i+1}: ${q['q']}',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
             ...(q['o'] as List<String>).asMap().entries.map(
-              (entry) => Container(
-                margin: EdgeInsets.only(bottom: 10),
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => answer(entry.key),
-                  child: Text(entry.value),
-                ),
+              (entry) => ElevatedButton(
+                onPressed: () => answer(entry.key),
+                child: Text(entry.value),
               ),
             )
           ],
@@ -90,5 +90,3 @@ class _QuizAppState extends State<QuizApp> {
     );
   }
 }
-
-
